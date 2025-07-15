@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Link } from "lucide-react";
+import { ArrowRight, Link, Stethoscope } from "lucide-react";
 import { image } from "next/image";
 import { features } from "@/lib/data";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -83,13 +83,36 @@ export default function Home() {
         </div>
       </section>
 
-      <section className=" py-20 bg-muted/30">
+      <section className=" py-20 ">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
+            <Badge
+              variant="outline"
+              className="bg-emerald-900/30 border-emerald-700/30 px-4 py-2 text-emerald-300 text-sm font-medium mb-4"
+            >
+              affordable and reliable
+            </Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Consultation Packages
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto"> Our platform is designed to make healthcare more accessible and convenient for everyone. </p>
             </h2>
+          </div>
+
+          <div>
+            {/*pricing table*/}
+            <Card className="mt-12 bg-muted/20 border-emerald-900/30">
+              <CardHeader>
+                <CardTitle className="text-xl font-semibold text-white flex items-center">
+                  <Stethoscope className="h-5 w-5 mr-2 text-emerald-400" />
+                  Credit System
+                </CardTitle>
+
+                <CardAction>Card Action</CardAction>
+              </CardHeader>
+              <CardContent>
+                <p>Card Content</p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
