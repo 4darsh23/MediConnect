@@ -13,3 +13,38 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+ model User {
+    id                String    @id @default(uuid())
+  clerkUserId       String    @unique // Clerk's user ID
+  email             String    @unique
+  name              String?
+  imageUrl          String?
+  role              UserRole  @default(UNASSIGNED) // UNASSIGNED, PATIENT, DOCTOR, ADMIN
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+ // Patient-specific fields
+  credits           Int       @default(2) // Accumulated credit balance
+
+   // Doctor-specific fields
+  specialty         String?
+  experience        Int?      // Years of experience
+  credentialUrl     String?   // Document URL
+  description       String?   @db.Text
+  verificationStatus VerificationStatus?  @default(PENDING)
+
+
+ }
+
+ enum UserRole {
+  UNASSIGNED
+  PATIENT
+  DOCTOR
+  ADMIN
+ }
+
+ enum verificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+ }
