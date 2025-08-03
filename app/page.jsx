@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Check, Link, Stethoscope } from "lucide-react";
 import { creditBenefits, features, testimonials } from "@/lib/data";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Pricing from "@/components/pricing";
 
 export default function Home() {
   return (
@@ -99,6 +100,7 @@ export default function Home() {
 
           <div>
             {/*pricing table*/}
+            <Pricing />
 
             <Card className="mt-12 bg-muted/20 border-emerald-900/30">
               <CardHeader>

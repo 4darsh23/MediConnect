@@ -1,10 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 
 const Header = () => {
+  const { user } = useUser();
+
   return (
     <header className="fixed top-0 w-full border-b border-zinc-200 bg-background/80 backdrop-blur-md z-10 supports-[backdrop-filter]:bg-background/60 dark:border-zinc-800">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
