@@ -1,6 +1,7 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
+import { format } from "date-fns";
 
 // define credit allocation
 
@@ -27,5 +28,25 @@ export async function checkAndAllocateCredits(user) {
     const hasBasic = has({ plan: "free_user" });
     const hasstandard = has({ plan: "standard" });
     const haspremium = has({ plan: "premium" });
+
+    let currentPlan = null;
+    let creditsToAllocate = 0;
+
+    if (haspremium) {
+      currentPlan = "premium";
+      creditsToAllocate = "PLAN_CREDITS.premium ";
+    } else if (hasstandard) {
+      currentPlan = "standard";
+      creditsToAllocate = " PLAN_CREDITS.standard";
+    } else if (hasBasic) {
+      currentPlan = "free_user";
+      creditsToAllocate = "PLAN_CREDITS..free_user";
+    }
+
+    if (!currentPlan) {
+      return user;
+    }
+
+    const currentMonth = format(new Date(), "yyyy-MM");
   } catch (error) {}
 }
