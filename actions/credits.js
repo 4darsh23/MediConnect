@@ -48,5 +48,16 @@ export async function checkAndAllocateCredits(user) {
     }
 
     const currentMonth = format(new Date(), "yyyy-MM");
+
+    if (user.transaction.length > 0) {
+      const lastTransaction = user.transaction[0];
+      const transactionMonth = format(new Date(lastTransaction.creditsAt), "yyyy-MM");
+    }
+    const transactionPlan = latestTransaction.package.Id;
+
+    // credits same so the plan remain same
+    if (transactionMonth === currentMonth && transactionPlan === currentPlan) {
+      return user;
+    }
   } catch (error) {}
 }
