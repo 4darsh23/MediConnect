@@ -4,10 +4,12 @@ import { ArrowRight, Check, Link, Stethoscope } from "lucide-react";
 import { creditBenefits, features, testimonials } from "@/lib/data";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Pricing from "@/components/pricing";
+import { CometCard } from "@/components/ui/comet-card";
+import { WorldMap } from "@/components/ui/world-map";
 
 export default function Home() {
   return (
-    <div className="bg-background">
+    <div className="">
       <section className="relative overflow-hidden py-32">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -63,7 +65,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => {
               return (
-                <Card
+                <CometCard
                   key={index}
                   className="border-emerald-900/20 hover:border-emerald-900/40 transition-all duration-300"
                 >
@@ -76,7 +78,7 @@ export default function Home() {
                   <CardContent>
                     <p className="text-muted-foreground "> {feature.description} </p>
                   </CardContent>
-                </Card>
+                </CometCard>
               );
             })}
           </div>
@@ -136,45 +138,53 @@ export default function Home() {
         </div>
       </section>
 
-      <section className=" py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <Badge
-              variant="outline"
-              className="bg-emerald-900/30 border-b-emerald-700/30 px-4 py-1 text-emerald-400 text-sm font-medium mb-4 "
-            >
-              {" "}
-              Success Stories{" "}
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Users Feedbacks
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto"> Hear from out Patients and Doctors </p>
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonials, index) => {
-              return (
-                <Card
-                  key={index}
-                  className="border-emerald-900/20 hover:border-emerald-900/40 transition-all duration-300"
-                >
-                  <CardContent className="pt-6">
-                    <div className=" flex items-center mb-4">
-                      <div className=" w-12 h-12 rounded-full bg-emerald-900/20  justify-center mr-4  flex items-center">
-                        <span className="text-emerald-400 font-bold">{testimonials.initials}</span>
+      <section className=" py-20 ">
+        <WorldMap
+          lineColor="#22c55e"
+          dots={[
+            { start: { lat: 37.7749, lng: -122.4194 }, end: { lat: 51.5074, lng: -0.1278 } },
+            { start: { lat: 28.6139, lng: 77.209 }, end: { lat: 35.6762, lng: 139.6503 } },
+          ]}
+        >
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-16">
+              <Badge
+                variant="outline"
+                className="bg-emerald-900/30 border-b-emerald-700/30 px-4 py-1 text-emerald-400 text-sm font-medium mb-4 "
+              >
+                {" "}
+                Success Stories{" "}
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Users Feedbacks
+                <p className="text-muted-foreground text-lg max-w-2xl mx-auto"> Hear from out Patients and Doctors </p>
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {testimonials.map((testimonials, index) => {
+                return (
+                  <Card
+                    key={index}
+                    className="border-emerald-900/20 hover:border-emerald-900/40 transition-all duration-300"
+                  >
+                    <CardContent className="pt-6">
+                      <div className=" flex items-center mb-4">
+                        <div className=" w-12 h-12 rounded-full bg-emerald-900/20  justify-center mr-4  flex items-center">
+                          <span className="text-emerald-400 font-bold">{testimonials.initials}</span>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-white">{testimonials.name}</h4>
+                          <p className="text-sm text-muted-foreground">{testimonials.role}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="font-semibold text-white">{testimonials.name}</h4>
-                        <p className="text-sm text-muted-foreground">{testimonials.role}</p>
-                      </div>
-                    </div>
-                    <p className="text-muted-foreground    ">&quot;{testimonials.quote}&quote</p>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                      <p className="text-muted-foreground    ">&quot;{testimonials.quote}&quote</p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        </WorldMap>
       </section>
 
       <section className=" py-30">

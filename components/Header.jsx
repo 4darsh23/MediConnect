@@ -16,7 +16,7 @@ export default function Header() {
   // For now, removing direct await calls that would cause client/server boundary issues
 
   return (
-    <header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-10 supports-[backdrop-filter]:bg-background/60">
+    <header className="fixed top-0 w-full border-b border-white/10 bg-transparent backdrop-blur-md z-10 supports-[backdrop-filter]:bg-transparent">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link
           href="/"
