@@ -1,63 +1,77 @@
 "use server";
 
-import { auth } from "@clerk/nextjs/server";
-import { format } from "date-fns";
+import { currentUser } from "@clerk/nextjs/server";
+import { db } from "@/lib/prisma";
 
-// define credit allocation
-
+// define credit allocation per subscription plan
 const PLAN_CREDITS = {
   free_user: 0,
   standard: 0,
   premium: 24,
 };
 
-const APPOINTMENT_CREDIT_COST = 2;
-
 export async function checkAndAllocateCredits(user) {
   try {
-    if (!user) {
-      return null;
+    // Only operate for valid patient users
+    if (!user) return null;
+    if (user.role !== "PATIENT") return user;
+
+    // Determine the user's current plan
+    let currentPlan = "free_user";
+    const clerkUser = await currentUser();
+    const planFromClerk = clerkUser?.publicMetadata?.plan;
+    if (typeof planFromClerk === "string" && PLAN_CREDITS.hasOwnProperty(planFromClerk)) {
+      currentPlan = planFromClerk;
+    } else if (user?.transactions?.[0]?.packageId && PLAN_CREDITS.hasOwnProperty(user.transactions[0].packageId)) {
+      currentPlan = user.transactions[0].packageId;
     }
 
-    if (user.role !== "PATIENT") {
-      return user;
-    }
+    const creditsToAllocate = PLAN_CREDITS[currentPlan] ?? 0;
+    if (creditsToAllocate <= 0) return user;
 
-    const { has } = await auth();
+    // Check if a purchase for this plan already exists this month
+    const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    const existingThisMonth = await db.creditTransaction.findFirst({
+      where: {
+        userId: user.id,
+        type: "CREDIT_PURCHASE",
+        packageId: currentPlan,
+        createdAt: { gte: startOfMonth },
+      },
+      orderBy: { createdAt: "desc" },
+    });
 
-    const hasBasic = has({ plan: "free_user" });
-    const hasstandard = has({ plan: "standard" });
-    const haspremium = has({ plan: "premium" });
+    if (existingThisMonth) return user;
 
-    let currentPlan = null;
-    let creditsToAllocate = 0;
+    // Allocate credits and record transaction atomically
+    const updatedUser = await db.$transaction(async (tx) => {
+      await tx.creditTransaction.create({
+        data: {
+          userId: user.id,
+          amount: creditsToAllocate,
+          type: "CREDIT_PURCHASE",
+          packageId: currentPlan,
+        },
+      });
 
-    if (haspremium) {
-      currentPlan = "premium";
-      creditsToAllocate = "PLAN_CREDITS.premium ";
-    } else if (hasstandard) {
-      currentPlan = "standard";
-      creditsToAllocate = " PLAN_CREDITS.standard";
-    } else if (hasBasic) {
-      currentPlan = "free_user";
-      creditsToAllocate = "PLAN_CREDITS..free_user";
-    }
+      return tx.user.update({
+        where: { id: user.id },
+        data: {
+          credits: { increment: creditsToAllocate },
+        },
+        include: {
+          transactions: {
+            where: { type: "CREDIT_PURCHASE" },
+            orderBy: { createdAt: "desc" },
+            take: 1,
+          },
+        },
+      });
+    });
 
-    if (!currentPlan) {
-      return user;
-    }
-
-    const currentMonth = format(new Date(), "yyyy-MM");
-
-    if (user.transaction.length > 0) {
-      const lastTransaction = user.transaction[0];
-      const transactionMonth = format(new Date(lastTransaction.creditsAt), "yyyy-MM");
-    }
-    const transactionPlan = latestTransaction.package.Id;
-
-    // credits same so the plan remain same
-    if (transactionMonth === currentMonth && transactionPlan === currentPlan) {
-      return user;
-    }
-  } catch (error) {}
+    return updatedUser;
+  } catch (error) {
+    console.error("Failed to check subscription and allocate credits", error.message);
+    return null;
+  }
 }

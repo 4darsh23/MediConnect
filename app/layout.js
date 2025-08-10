@@ -26,17 +26,22 @@ export default function RootLayout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
-            {/*Header*/}
-            <Header />
+            <div className="min-h-screen w-full relative bg-black">
+              {/* App Content */}
+              <div className="relative z-10">
+                {/*Header*/}
+                <Header />
 
-            <main className="min-h-screen pt-20">{children}</main>
+                <main className="min-h-screen pt-20">{children}</main>
 
-            {/*Footer*/}
-            <footer className="bg-muted/50 py-12">
-              <div className="container mx-auto px-4 text-center text-gray-200">
-                <p> Made by Adarsh </p>
+                {/*Footer*/}
+                <footer className="bg-muted/50 py-12">
+                  <div className="container mx-auto px-4 text-center text-gray-200">
+                    <p> Made by Adarsh </p>
+                  </div>
+                </footer>
               </div>
-            </footer>
+            </div>
           </ThemeProvider>
         </body>
       </html>
