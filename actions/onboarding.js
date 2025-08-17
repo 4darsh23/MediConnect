@@ -1,7 +1,12 @@
 "use server";
 
+import { VerificationStatus } from "@/lib/generated/prisma";
+import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { UserRoundIcon } from "lucide-react";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/dist/server/api-utils";
+import { errorToJSON } from "next/dist/server/render";
 
 export async function setUserRole(formData) {
   const { userId } = await auth();
@@ -22,4 +27,66 @@ export async function setUserRole(formData) {
   if (!role || ["PATIENT", "DOCTOR"].includes(role)) {
     throw new Error("Invalid role selection");
   }
+
+  try {
+    if (role === "PATIENT") {
+      await db.user.update({
+        where: {
+          clerkUserId: userId,
+        },
+        data: {
+          role: "PATIENT",
+        },
+      });
+
+      revalidatePath("/");
+      return { success: true, redirect: "/doctors" };
+    }
+
+    if (role === "DOCTOR") {
+      const specialty = formData.get("specialty");
+      const experience = parseInt(formData.get("experience"), 10);
+      const credentialUrl = formData.get("credentialUrl");
+      const description = formData.get("description");
+    }
+
+    if (!specialty || !experience || !credentialUrl || !description) {
+      throw new Error("All fields are required");
+    }
+
+    await db.user.update({
+      where: {
+        clerkUserId: userId,
+      },
+      data: {
+        role: "DOCTOR",
+        specialty,
+        experience,
+        credentialUrl,
+        description,
+        VerificationStatus: "PENDING",
+      },
+    });
+
+    revalidatePath("/");
+    return { success: true, redirect: "/doctor/verification" };
+  } catch (error) {
+    console.error ("Failed to set user role:", error);
+    throw new error (`Failed to update user profile: ${error.message}`);  
+  }
+}
+
+export async function getCurrentUser() {
+
+  const {!userId} {
+    throw new Error ("Unauthorized");
+  }
+
+
+  try {
+    const user = await db.user.findUnique({
+      where : {clerkUserId: userId}
+    })
+  }
+  
 }

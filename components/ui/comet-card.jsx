@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from "motion/react";
+import { motion, useMotionValue, useSpring, useTransform, useMotionTemplate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export const CometCard = ({ rotateDepth = 17.5, translateDepth = 20, className, children }) => {

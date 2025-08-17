@@ -1,23 +1,21 @@
 "use client";
-
 import { useRef } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import DottedMap from "dotted-map";
 
 import { useTheme } from "next-themes";
 
-// Converted to plain JS (no TypeScript syntax) to fix parsing error in .jsx
-export function WorldMap({ dots = [], lineColor = "#22c55e", className = "" }) {
+export default function WorldMap({ dots = [], lineColor = "#22c55e", className = "" }) {
   const svgRef = useRef(null);
   const map = new DottedMap({ height: 100, grid: "diagonal" });
 
   const { theme } = useTheme();
 
   const svgMap = map.getSVG({
-    radius: 0.2,
-    color: theme === "dark" ? "#FFFFFF1A" : "#00000033",
+    radius: 0.22,
+    color: theme === "dark" ? "#FFFFFF33" : "#00000033",
     shape: "circle",
-    backgroundColor: "transparent",
+    backgroundColor: "white",
   });
 
   const projectPoint = (lat, lng) => {
@@ -33,15 +31,17 @@ export function WorldMap({ dots = [], lineColor = "#22c55e", className = "" }) {
   };
 
   return (
-    <div className={`w-full aspect-[2/1] bg-transparent rounded-lg relative font-sans ${className}`}>
+    <div className={`w-full aspect-[2/1] bg-transparent rounded-xl relative font-sans mx-auto max-w-5xl ${className}`}>
       <img
         src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
-        className="h-full w-full pointer-events-none select-none"
+        className="h-full w-full [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] pointer-events-none select-none"
         alt="world map"
         height="495"
         width="1056"
         draggable={false}
       />
+      {/* Top/Bottom vignette to darken edges */}
+      <div className="pointer-events-none absolute inset-0 rounded-xl shadow-[inset_0_48px_96px_rgba(0,0,0,0.10),inset_0_-48px_96px_rgba(0,0,0,0.28)]" />
       <svg
         ref={svgRef}
         viewBox="0 0 800 400"
@@ -57,9 +57,17 @@ export function WorldMap({ dots = [], lineColor = "#22c55e", className = "" }) {
                 fill="none"
                 stroke="url(#path-gradient)"
                 strokeWidth="1"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1, delay: 0.5 * i, ease: "easeOut" }}
+                initial={{
+                  pathLength: 0,
+                }}
+                animate={{
+                  pathLength: 1,
+                }}
+                transition={{
+                  duration: 1,
+                  delay: 0.5 * i,
+                  ease: "easeOut",
+                }}
                 key={`start-upper-${i}`}
               ></motion.path>
             </g>
@@ -76,7 +84,7 @@ export function WorldMap({ dots = [], lineColor = "#22c55e", className = "" }) {
           >
             <stop
               offset="0%"
-              stopColor={lineColor}
+              stopColor="white"
               stopOpacity="0"
             />
             <stop
@@ -91,7 +99,7 @@ export function WorldMap({ dots = [], lineColor = "#22c55e", className = "" }) {
             />
             <stop
               offset="100%"
-              stopColor={lineColor}
+              stopColor="white"
               stopOpacity="0"
             />
           </linearGradient>
