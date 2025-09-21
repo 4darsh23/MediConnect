@@ -71,22 +71,25 @@ export async function setUserRole(formData) {
     revalidatePath("/");
     return { success: true, redirect: "/doctor/verification" };
   } catch (error) {
-    console.error ("Failed to set user role:", error);
-    throw new error (`Failed to update user profile: ${error.message}`);  
+    console.error("Failed to set user role:", error);
+    throw new error(`Failed to update user profile: ${error.message}`);
   }
 }
 
 export async function getCurrentUser() {
-
-  const {!userId} {
-    throw new Error ("Unauthorized");
-  }
-
-
   try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return null; // User not authenticated, return null instead of throwing
+    }
+
     const user = await db.user.findUnique({
-      where : {clerkUserId: userId}
-    })
+      where: { clerkUserId: userId },
+    });
+    return user; // This will be null if user doesn't exist in database
+  } catch (error) {
+    console.error("Failed to get user information ", error);
+    return null;
   }
-  
 }
