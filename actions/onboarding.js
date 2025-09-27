@@ -5,7 +5,7 @@ import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { UserRoundIcon } from "lucide-react";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/dist/server/api-utils";
+import { redirect } from "next/navigation";
 import { errorToJSON } from "next/dist/server/render";
 
 export async function setUserRole(formData) {
@@ -24,7 +24,7 @@ export async function setUserRole(formData) {
 
   const role = formData.get("role");
 
-  if (!role || ["PATIENT", "DOCTOR"].includes(role)) {
+  if (!role || !["PATIENT", "DOCTOR"].includes(role)) {
     throw new Error("Invalid role selection");
   }
 
@@ -48,31 +48,31 @@ export async function setUserRole(formData) {
       const experience = parseInt(formData.get("experience"), 10);
       const credentialUrl = formData.get("credentialUrl");
       const description = formData.get("description");
+
+      if (!specialty || !experience || !credentialUrl || !description) {
+        throw new Error("All fields are required");
+      }
+
+      await db.user.update({
+        where: {
+          clerkUserId: userId,
+        },
+        data: {
+          role: "DOCTOR",
+          specialty,
+          experience,
+          credentialUrl,
+          description,
+          VerificationStatus: "PENDING",
+        },
+      });
+
+      revalidatePath("/");
+      return { success: true, redirect: "/doctor/verification" };
     }
-
-    if (!specialty || !experience || !credentialUrl || !description) {
-      throw new Error("All fields are required");
-    }
-
-    await db.user.update({
-      where: {
-        clerkUserId: userId,
-      },
-      data: {
-        role: "DOCTOR",
-        specialty,
-        experience,
-        credentialUrl,
-        description,
-        VerificationStatus: "PENDING",
-      },
-    });
-
-    revalidatePath("/");
-    return { success: true, redirect: "/doctor/verification" };
   } catch (error) {
     console.error("Failed to set user role:", error);
-    throw new error(`Failed to update user profile: ${error.message}`);
+    throw new Error(`Failed to update user profile: ${error.message}`);
   }
 }
 
