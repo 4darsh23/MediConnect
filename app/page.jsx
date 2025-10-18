@@ -23,7 +23,7 @@ export default function Home() {
                 className="bg-emerald-900/30 border-emerald-700/30 px-4 py-2 text-emerald-300 text-sm font-medium"
               >
                 {" "}
-                Trusted Care, Anytime, Anywhere{" "}
+                Trusted Care, Anytime, Anywhere , AnyPlace{" "}
               </Badge>
               <h1 className=" text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                 Connect With Doctors <br /> Anytime anywhere{" "}
