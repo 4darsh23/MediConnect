@@ -1,8 +1,19 @@
+"use client";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
-import React from "react";
+const doctoFormSchema = z.object({});
 
 const OnboardingPage = () => {
-  return <div> teri maki chut bsdk teri ma ka bhosda </div>;
+  const [step, setStep] = useState("choose-role");
+
+  const {} = useForm({
+    resolver: zodResolver(doctoFormSchema),
+  });
+
+  return <div> Onboarding Page</div>;
 };
 
 export default OnboardingPage;
