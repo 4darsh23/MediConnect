@@ -7,13 +7,12 @@ import { creditBenefits, features, testimonials } from "@/lib/data";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Pricing from "@/components/pricing";
 import { CometCard } from "@/components/ui/comet-card";
-import WorldMap from "@/components/ui/world-map";
+
 import { motion } from "framer-motion";
-import { Globe } from "@/components/ui/globe";
 
 export default function Home() {
   return (
-    <div className="">
+    <div className="flex-right justify-center">
       <section className="relative overflow-hidden py-32">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -23,7 +22,7 @@ export default function Home() {
                 className="bg-emerald-900/30 border-emerald-700/30 px-4 py-2 text-emerald-300 text-sm font-medium"
               >
                 {" "}
-                Trusted Care, Anytime, Anywhere , AnyPlace, Always {" "}
+                Trusted Care, Anytime, Anywhere , AnyPlace, Always{" "}
               </Badge>
               <h1 className=" text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                 Connect With Doctors <br /> Anytime anywhere{" "}
@@ -73,14 +72,14 @@ export default function Home() {
                   key={index}
                   className="border-emerald-900/20 hover:border-emerald-900/40 transition-all duration-300"
                 >
-                  <CardHeader className="pb-2">
+                  <CardHeader className="pb-2 px-10 py-5">
                     <div className="bg-emerald-900/20 p-3 rounded-lg w-fit mb-4">{feature.icon}</div>
                     <CardTitle className="text-xl font-semibold text-white"> {feature.title} </CardTitle>
 
                     <CardAction>Card Action</CardAction>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground "> {feature.description} </p>
+                    <p className="text-muted-foreground"> {feature.description} </p>
                   </CardContent>
                 </CometCard>
               );
@@ -150,7 +149,7 @@ export default function Home() {
               className="bg-emerald-900/30 border-b-emerald-700/30 px-4 py-1 text-emerald-400 text-sm font-medium mb-4 "
             >
               {" "}
-              Success Stories{" "}
+              Success Stories{" of people "}
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Users Feedbacks
@@ -184,41 +183,6 @@ export default function Home() {
       </section>
 
       <section>
-        <WorldMap
-          className="justify-center"
-          dots={[
-            {
-              start: {
-                lat: 64.2008,
-                lng: -149.4937,
-              }, // Alaska (Fairbanks)
-              end: {
-                lat: 34.0522,
-                lng: -118.2437,
-              }, // Los Angeles
-            },
-            {
-              start: { lat: 64.2008, lng: -149.4937 }, // Alaska (Fairbanks)
-              end: { lat: -15.7975, lng: -47.8919 }, // Brazil (Brasília)
-            },
-            {
-              start: { lat: -15.7975, lng: -47.8919 }, // Brazil (Brasília)
-              end: { lat: 38.7223, lng: -9.1393 }, // Lisbon
-            },
-            {
-              start: { lat: 51.5074, lng: -0.1278 }, // London
-              end: { lat: 28.6139, lng: 77.209 }, // New Delhi
-            },
-            {
-              start: { lat: 28.6139, lng: 77.209 }, // New Delhi
-              end: { lat: 43.1332, lng: 131.9113 }, // Vladivostok
-            },
-            {
-              start: { lat: 28.6139, lng: 77.209 }, // New Delhi
-              end: { lat: -1.2921, lng: 36.8219 }, // Nairobi
-            },
-          ]}
-        />
         <div className="justify-center px-20">Connecting people all across</div>
       </section>
 
@@ -246,10 +210,12 @@ export default function Home() {
                 >
                   <Link href="/pricing"> View Pricing </Link>
                 </Button>
+                <Button className="bg-lime-600">size = "lg"</Button>
               </div>
             </CardContent>
           </Card>
         </div>
+        <footer className="justify-center , flex-col , px-5 , py-4"></footer>
       </section>
     </div>
   );

@@ -3,10 +3,7 @@
 import { VerificationStatus } from "@/lib/generated/prisma";
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { UserRoundIcon } from "lucide-react";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { errorToJSON } from "next/dist/server/render";
 
 export async function setUserRole(formData) {
   const { userId } = await auth();
@@ -59,11 +56,11 @@ export async function setUserRole(formData) {
         },
         data: {
           role: "DOCTOR",
-          specialty,
-          experience,
-          credentialUrl,
-          description,
-          VerificationStatus: "PENDING",
+          specialty: specialty,
+          experience: experience,
+          credentialUrl: credentialUrl,
+          description: description,
+          verificationStatus: VerificationStatus.PENDING,
         },
       });
 

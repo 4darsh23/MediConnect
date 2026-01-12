@@ -6,7 +6,7 @@ import { Calendar, CreditCard, ShieldCheck, Stethoscope, User } from "lucide-rea
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import { Badge } from "./ui/badge";
-import Image from "next/image";
+import ClientSideImage from "./ClientSideImage";
 
 export default function Header() {
   const { user } = useUser();
@@ -22,7 +22,7 @@ export default function Header() {
           href="/"
           className="flex items-center gap-2 cursor-pointer"
         >
-          <Image
+          <ClientSideImage
             src="/logo-single.png"
             alt="Medimeet Logo"
             width={200}
