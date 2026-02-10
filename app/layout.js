@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import Header from "@/components/Header";
 import { dark } from "@clerk/themes";
 import { ThemeProvider } from "@/components/theme-provider";
+import { checkUser } from "@/lib/checkUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,7 +14,10 @@ export const metadata = {
   description: "Connect with doctors anytime, anywhere",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  // Ensure a corresponding User row exists in Postgres for the logged-in Clerk user
+  await checkUser();
+
   return (
     <ClerkProvider
       appearance={{
@@ -31,7 +35,7 @@ export default function RootLayout({ children }) {
             sizes="any"
           />
         </head>
-        <body className={`${inter.className}`}>
+        <body className={inter.className}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"

@@ -24,7 +24,7 @@ export default function Header() {
         >
           <ClientSideImage
             src="/logo-single.png"
-            alt="Medimeet Logo"
+            alt="MediConnect Logo"
             width={200}
             height={60}
             className="h-10 w-auto object-contain"

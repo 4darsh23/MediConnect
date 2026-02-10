@@ -1,18 +1,13 @@
 "use client";
 
-import React from 'react';
-import Image from 'next/image';
+import Image from "next/image";
 
-const ClientSideImage = ({ src, alt, width, height, className }) => {
-  return (
-    <Image
-      src={src}
-      alt={alt}
-      width={width}
-      height={height}
-      className={className}
-    />
-  );
+/**
+ * Simple client-side wrapper around Next.js Image.
+ * Fixes the missing import error for `ClientSideImage` in `Header.jsx`.
+ */
+const ClientSideImage = (props) => {
+  return <Image {...props} />;
 };
 
 export default ClientSideImage;

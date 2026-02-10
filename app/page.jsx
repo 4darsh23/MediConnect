@@ -1,14 +1,102 @@
 "use client";
 
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Check, Link, Stethoscope } from "lucide-react";
+import { ArrowRight, Check, Link, Stethoscope, Loader2 } from "lucide-react";
 import { creditBenefits, features, testimonials } from "@/lib/data";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Pricing from "@/components/pricing";
 import { CometCard } from "@/components/ui/comet-card";
+import useFetch from "@/hooks/use-Fetch";
 
 import { motion } from "framer-motion";
+
+// Demo component for useFetch hook
+const UseFetchDemo = () => {
+  // Mock API function that simulates fetching data
+  const fetchMockData = async () => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Simulate successful response
+    return {
+      message: "Hello from useFetch hook!",
+      timestamp: new Date().toISOString(),
+      data: {
+        users: 1250,
+        doctors: 85,
+        consultations: 3420
+      }
+    };
+  };
+
+  // Mock API function that simulates an error
+  const fetchWithError = async () => {
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    throw new Error("Failed to fetch data - this is a demo error!");
+  };
+
+  // Use the hook with successful fetch
+  const { data, loading, error, fn } = useFetch(fetchMockData);
+  
+  // Auto-execute on mount
+  useEffect(() => {
+    fn();
+  }, [fn]);
+
+  return (
+    <Card className="bg-muted/20 border-emerald-900/30">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold text-white">Hook Demo</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {loading && (
+          <div className="flex items-center justify-center py-4">
+            <Loader2 className="h-6 w-6 animate-spin text-emerald-400 mr-2" />
+            <span className="text-muted-foreground">Loading...</span>
+          </div>
+        )}
+
+        {error && (
+          <div className="p-3 bg-red-900/20 border border-red-700/30 rounded-lg">
+            <p className="text-red-400 text-sm">Error: {error}</p>
+          </div>
+        )}
+
+        {data && !loading && (
+          <div className="space-y-3">
+            <div className="p-3 bg-emerald-900/20 border border-emerald-700/30 rounded-lg">
+              <p className="text-emerald-400 text-sm font-medium">{data.message}</p>
+              <p className="text-muted-foreground text-xs mt-1">
+                Fetched at: {new Date(data.timestamp).toLocaleTimeString()}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 text-center">
+              <div className="p-2 bg-muted/30 rounded">
+                <div className="text-lg font-bold text-emerald-400">{data.data.users}</div>
+                <div className="text-xs text-muted-foreground">Users</div>
+              </div>
+              <div className="p-2 bg-muted/30 rounded">
+                <div className="text-lg font-bold text-emerald-400">{data.data.doctors}</div>
+                <div className="text-xs text-muted-foreground">Doctors</div>
+              </div>
+              <div className="p-2 bg-muted/30 rounded">
+                <div className="text-lg font-bold text-emerald-400">{data.data.consultations}</div>
+                <div className="text-xs text-muted-foreground">Consultations</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="text-xs text-muted-foreground text-center pt-2 border-t border-muted/30">
+          This demonstrates the useFetch hook with loading, error, and success states
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
 export default function Home() {
   return (
@@ -184,6 +272,22 @@ export default function Home() {
 
       <section>
         <div className="justify-center px-20">Connecting people all across</div>
+      </section>
+
+      {/* useFetch Hook Demo Section */}
+      <section className="py-20 bg-muted/10">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              useFetch Hook Demo
+            </h2>
+            <p className="text-muted-foreground">Testing our custom data fetching hook</p>
+          </div>
+
+          <div className="max-w-md mx-auto">
+            <UseFetchDemo />
+          </div>
+        </div>
       </section>
 
       <section className=" py-30">
