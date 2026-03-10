@@ -17,7 +17,7 @@ const UseFetchDemo = () => {
   // Mock API function that simulates fetching data
   const fetchMockData = async () => {
     // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Simulate successful response
     return {
@@ -26,20 +26,20 @@ const UseFetchDemo = () => {
       data: {
         users: 1250,
         doctors: 85,
-        consultations: 3420
-      }
+        consultations: 3420,
+      },
     };
   };
 
   // Mock API function that simulates an error
   const fetchWithError = async () => {
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
     throw new Error("Failed to fetch data - this is a demo error!");
   };
 
   // Use the hook with successful fetch
   const { data, loading, error, fn } = useFetch(fetchMockData);
-  
+
   // Auto-execute on mount
   useEffect(() => {
     fn();
@@ -68,9 +68,7 @@ const UseFetchDemo = () => {
           <div className="space-y-3">
             <div className="p-3 bg-emerald-900/20 border border-emerald-700/30 rounded-lg">
               <p className="text-emerald-400 text-sm font-medium">{data.message}</p>
-              <p className="text-muted-foreground text-xs mt-1">
-                Fetched at: {new Date(data.timestamp).toLocaleTimeString()}
-              </p>
+              <p className="text-muted-foreground text-xs mt-1">Fetched at: {new Date(data.timestamp).toLocaleTimeString()}</p>
             </div>
 
             <div className="grid grid-cols-3 gap-2 text-center">
@@ -90,9 +88,7 @@ const UseFetchDemo = () => {
           </div>
         )}
 
-        <div className="text-xs text-muted-foreground text-center pt-2 border-t border-muted/30">
-          This demonstrates the useFetch hook with loading, error, and success states
-        </div>
+        <div className="text-xs text-muted-foreground text-center pt-2 border-t border-muted/30">This demonstrates the useFetch hook with loading, error, and success states</div>
       </CardContent>
     </Card>
   );
@@ -164,7 +160,7 @@ export default function Home() {
                     <div className="bg-emerald-900/20 p-3 rounded-lg w-fit mb-4">{feature.icon}</div>
                     <CardTitle className="text-xl font-semibold text-white"> {feature.title} </CardTitle>
 
-                    <CardAction>Card Action</CardAction>
+                    <CardAction></CardAction>
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground"> {feature.description} </p>
@@ -278,9 +274,7 @@ export default function Home() {
       <section className="py-20 bg-muted/10">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              useFetch Hook Demo
-            </h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">useFetch Hook Demo</h2>
             <p className="text-muted-foreground">Testing our custom data fetching hook</p>
           </div>
 
