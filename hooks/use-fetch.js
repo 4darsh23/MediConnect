@@ -27,3 +27,4 @@ const useFetch = (cb) => {
 };
 
 export default useFetch;
+

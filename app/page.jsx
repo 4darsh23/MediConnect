@@ -8,7 +8,7 @@ import { creditBenefits, features, testimonials } from "@/lib/data";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Pricing from "@/components/pricing";
 import { CometCard } from "@/components/ui/comet-card";
-import useFetch from "@/hooks/use-Fetch";
+import useFetch from "@/hooks/use-fetch";
 
 import { motion } from "framer-motion";
 
@@ -267,7 +267,7 @@ export default function Home() {
       </section>
 
       <section>
-        <div className="justify-center px-20">Connecting people all across</div>
+        <div className="justify-center px-20"></div>
       </section>
 
       {/* useFetch Hook Demo Section */}

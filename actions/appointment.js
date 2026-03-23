@@ -4,17 +4,7 @@ import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { deductCreditsForAppointment } from "@/actions/credits";
-import { Vonage } from "@vonage/server-sdk";
 import { addDays, addMinutes, format, isBefore, endOfDay } from "date-fns";
-import { Auth } from "@vonage/auth";
-
-// Initialize Vonage Video API client
-const credentials = new Auth({
-  applicationId: process.env.NEXT_PUBLIC_VONAGE_APPLICATION_ID,
-  privateKey: process.env.VONAGE_PRIVATE_KEY,
-});
-const options = {};
-const vonage = new Vonage(credentials, options);
 
 /**
  * Book a new appointment with a doctor
@@ -109,7 +99,7 @@ export async function bookAppointment(formData) {
       throw new Error("This time slot is already booked");
     }
 
-    // Create a new Vonage Video API session
+    // Create an internal session id
     const sessionId = await createVideoSession();
 
     // Deduct credits from patient and add to doctor
@@ -128,7 +118,7 @@ export async function bookAppointment(formData) {
         endTime,
         patientDescription,
         status: "SCHEDULED",
-        videoSessionId: sessionId, // Store the Vonage session ID
+        videoSessionId: sessionId, // Store the session ID
       },
     });
 
@@ -141,15 +131,10 @@ export async function bookAppointment(formData) {
 }
 
 /**
- * Generate a Vonage Video API session
+ * Generate internal video session id
  */
 async function createVideoSession() {
-  try {
-    const session = await vonage.video.createSession({ mediaMode: "routed" });
-    return session.sessionId;
-  } catch (error) {
-    throw new Error("Failed to create video session: " + error.message);
-  }
+  return crypto.randomUUID();
 }
 
 /**
@@ -210,24 +195,9 @@ export async function generateVideoToken(formData) {
       throw new Error("The call will be available 30 minutes before the scheduled time");
     }
 
-    // Generate a token for the video session
-    // Token expires 2 hours after the appointment start time
-    const appointmentEndTime = new Date(appointment.endTime);
-    const expirationTime = Math.floor(appointmentEndTime.getTime() / 1000) + 60 * 60; // 1 hour after end time
-
-    // Use user's name and role as connection data
-    const connectionData = JSON.stringify({
-      name: user.name,
-      role: user.role,
-      userId: user.id,
-    });
-
-    // Generate the token with appropriate role and expiration
-    const token = vonage.video.generateClientToken(appointment.videoSessionId, {
-      role: "publisher", // Both doctor and patient can publish streams
-      expireTime: expirationTime,
-      data: connectionData,
-    });
+    // Create local placeholder identifiers
+    const token = `local-${crypto.randomUUID()}`;
+    const videoSessionId = appointment.videoSessionId || crypto.randomUUID();
 
     // Update the appointment with the token
     await db.appointment.update({
@@ -235,13 +205,14 @@ export async function generateVideoToken(formData) {
         id: appointmentId,
       },
       data: {
+        videoSessionId,
         videoSessionToken: token,
       },
     });
 
     return {
       success: true,
-      videoSessionId: appointment.videoSessionId,
+      videoSessionId,
       token: token,
     };
   } catch (error) {

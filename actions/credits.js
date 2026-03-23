@@ -75,3 +75,54 @@ export async function checkAndAllocateCredits(user) {
     return null;
   }
 }
+
+// Deduct credits when a patient books an appointment and credit the doctor
+export async function deductCreditsForAppointment(patientId, doctorId) {
+  try {
+    await db.$transaction(async (tx) => {
+      // Create credit transaction for patient (usage)
+      await tx.creditTransaction.create({
+        data: {
+          userId: patientId,
+          amount: -2,
+          type: "APPOINTMENT_DEDUCTION",
+        },
+      });
+
+      // Create credit transaction for doctor (earning)
+      await tx.creditTransaction.create({
+        data: {
+          userId: doctorId,
+          amount: 2,
+          type: "APPOINTMENT_DEDUCTION",
+        },
+      });
+
+      // Update patient's credit balance (decrement)
+      await tx.user.update({
+        where: { id: patientId },
+        data: {
+          credits: {
+            decrement: 2,
+          },
+        },
+      });
+
+      // Update doctor's credit balance (increment)
+      await tx.user.update({
+        where: { id: doctorId },
+        data: {
+          credits: {
+            increment: 2,
+          },
+        },
+      });
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to deduct credits for appointment", error);
+    return { success: false, error: error.message || "Failed to deduct credits" };
+  }
+}
+

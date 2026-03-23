@@ -1,6 +1,6 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { getDoctorAppointments, getDoctorAvailability } from "@/actions/doctor";
-import { AvailabilitySettings } from "./_components/availability-settings";
+import { AvailabilitySettings } from "./_components/availaibility-settings";
 import { getCurrentUser } from "@/actions/onboarding";
 import { redirect } from "next/navigation";
 import { Calendar, Clock, DollarSign } from "lucide-react";
