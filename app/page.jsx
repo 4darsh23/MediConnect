@@ -3,7 +3,8 @@
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Check, Link, Stethoscope, Loader2 } from "lucide-react";
+import { ArrowRight, Check, Stethoscope, Loader2 } from "lucide-react";
+import Link from "next/link";
 import { creditBenefits, features, testimonials } from "@/lib/data";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Pricing from "@/components/pricing";
@@ -116,16 +117,19 @@ export default function Home() {
                 <Button
                   size="lg"
                   className="bg-emerald-600 text-white hover:bg-emerald-700"
+                  asChild
                 >
-                  Get started <ArrowRight className="ml-2 h-4 w-4" />
+                  <Link href="/sign-up">
+                    Get started <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
                 </Button>
                 <Button
                   variant="outline"
                   size="lg"
                   className="border-emerald-700/30 hover:bg-muted/80"
+                  asChild
                 >
-                  {" "}
-                  Find Doctors{" "}
+                  <Link href="/doctors/All">Find Doctors</Link>
                 </Button>
               </div>
             </div>

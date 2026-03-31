@@ -1,6 +1,15 @@
+"use client";
+
 import { useState } from "react";
 import { toast } from "sonner";
 
+/**
+ * Generic helper hook to call a server action and expose { loading, data, error }.
+ *
+ * Usage:
+ *   const { loading, data, error, fn } = useFetch(serverAction);
+ *   fn(arg1, arg2...)
+ */
 const useFetch = (cb) => {
   const [data, setData] = useState(undefined);
   const [loading, setLoading] = useState(null);
@@ -14,10 +23,13 @@ const useFetch = (cb) => {
       const response = await cb(...args);
       setData(response);
       setError(null);
-    } catch (error) {
-      const errorMessage = error?.message || error?.toString() || "An error occurred";
+      return response;
+    } catch (err) {
+      const errorMessage =
+        err?.message || err?.toString?.() || "An error occurred";
       setError(errorMessage);
       toast.error(errorMessage);
+      return undefined;
     } finally {
       setLoading(false);
     }
@@ -27,4 +39,3 @@ const useFetch = (cb) => {
 };
 
 export default useFetch;
-
