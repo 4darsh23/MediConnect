@@ -77,7 +77,8 @@ export default function OnboardingPage() {
   // Role selection screen
   if (step === "choose-role") {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="min-h-[calc(100vh-10rem)] flex items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <Card
           className="border-emerald-900/20 hover:border-emerald-700/40 cursor-pointer transition-all"
           onClick={() => !loading && handlePatientSelection()}
@@ -122,6 +123,7 @@ export default function OnboardingPage() {
             </Button>
           </CardContent>
         </Card>
+      </div>
       </div>
     );
   }
