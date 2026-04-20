@@ -5,11 +5,10 @@ import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar, Clock, User, Video, Stethoscope, X, Edit, Loader2, CheckCircle } from "lucide-react";
+import { Calendar, Clock, User, Stethoscope, X, Edit, Loader2, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { cancelAppointment, addAppointmentNotes, markAppointmentCompleted } from "@/actions/doctor";
-import { generateVideoToken } from "@/actions/appointment";
 import useFetch from "@/hooks/use-fetch";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -23,7 +22,6 @@ export function AppointmentCard({ appointment, userRole, refetchAppointments }) 
   // UseFetch hooks for server actions
   const { loading: cancelLoading, fn: submitCancel, data: cancelData } = useFetch(cancelAppointment);
   const { loading: notesLoading, fn: submitNotes, data: notesData } = useFetch(addAppointmentNotes);
-  const { loading: tokenLoading, fn: submitTokenRequest, data: tokenData } = useFetch(generateVideoToken);
   const { loading: completeLoading, fn: submitMarkCompleted, data: completeData } = useFetch(markAppointmentCompleted);
 
   // Format date and time
@@ -95,17 +93,6 @@ export function AppointmentCard({ appointment, userRole, refetchAppointments }) 
     await submitNotes(formData);
   };
 
-  // Handle join video call
-  const handleJoinVideoCall = async () => {
-    if (tokenLoading) return;
-
-    setAction("video");
-
-    const formData = new FormData();
-    formData.append("appointmentId", appointment.id);
-    await submitTokenRequest(formData);
-  };
-
   // Handle successful operations
   useEffect(() => {
     if (cancelData?.success) {
@@ -142,15 +129,6 @@ export function AppointmentCard({ appointment, userRole, refetchAppointments }) 
       }
     }
   }, [notesData, refetchAppointments, router]);
-
-  useEffect(() => {
-    if (tokenData?.success) {
-      // Redirect to video call page with token and session ID
-      router.push(`/video-call?sessionId=${tokenData.videoSessionId}&token=${tokenData.token}&appointmentId=${appointment.id}`);
-    } else if (tokenData?.error) {
-      setAction(null);
-    }
-  }, [tokenData, appointment.id, router]);
 
   // Determine if appointment is active (within 30 minutes of start time)
   const isAppointmentActive = () => {
@@ -290,30 +268,6 @@ export function AppointmentCard({ appointment, userRole, refetchAppointments }) 
                 <div className="p-3 rounded-md bg-muted/20 border border-emerald-900/20">
                   <p className="text-white whitespace-pre-line">{appointment.patientDescription}</p>
                 </div>
-              </div>
-            )}
-
-            {/* Join Video Call Button */}
-            {appointment.status === "SCHEDULED" && (
-              <div className="space-y-2">
-                <h4 className="text-sm font-medium text-muted-foreground">Video Consultation</h4>
-                <Button
-                  className="w-full bg-emerald-600 hover:bg-emerald-700"
-                  disabled={!isAppointmentActive() || action === "video" || tokenLoading}
-                  onClick={handleJoinVideoCall}
-                >
-                  {tokenLoading || action === "video" ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Preparing Video Call...
-                    </>
-                  ) : (
-                    <>
-                      <Video className="h-4 w-4 mr-2" />
-                      {isAppointmentActive() ? "Join Video Call" : "Video call will be available 30 minutes before appointment"}
-                    </>
-                  )}
-                </Button>
               </div>
             )}
 

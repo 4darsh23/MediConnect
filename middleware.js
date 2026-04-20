@@ -1,7 +1,7 @@
 import { auth, clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const isProtectedRoute = createRouteMatcher(["/doctors(.*)", "/doctor(.*)", "/admin(.*)", "/video-call(.*)", "/appointment(.*)"]);
+const isProtectedRoute = createRouteMatcher(["/doctors(.*)", "/doctor(.*)", "/admin(.*)", "/appointment(.*)"]);
 const isOnboardingRoute = createRouteMatcher(["/onboarding(.*)"]);
 
 export default clerkMiddleware(async (auth, req) => {
