@@ -146,7 +146,7 @@ export default function Header() {
                   userPreviewMainIdentifier: "font-semibold",
                 },
               }}
-              afterSignOutUrl="/"
+              signOutOptions={{ redirectUrl: "/" }}
             />
           </SignedIn>
         </div>

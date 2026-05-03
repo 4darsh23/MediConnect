@@ -16,7 +16,11 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   // Ensure a corresponding User row exists in Postgres for the logged-in Clerk user
-  await checkUser();
+  try {
+    await checkUser();
+  } catch (error) {
+    console.error("checkUser error in layout:", error);
+  }
 
   return (
     <ClerkProvider
@@ -26,12 +30,13 @@ export default async function RootLayout({ children }) {
     >
       <html
         lang="en"
+        className="dark"
         suppressHydrationWarning
       >
         <head>
           <link
             rel="icon"
-            href="/logo.png"
+            href="/logo-single.png"
             sizes="any"
           />
         </head>
@@ -39,7 +44,7 @@ export default async function RootLayout({ children }) {
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
-            enableSystem
+            forcedTheme="dark"
             disableTransitionOnChange
           >
             <Header />

@@ -145,13 +145,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className=" py-20 bg-muted/30">
+      <section className=" pt-20 pb-32 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               How it works
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto"> Our platform is designed to make healthcare more accessible and convenient for everyone. </p>
             </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto"> Our platform is designed to make healthcare more accessible and convenient for everyone. </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => {
@@ -166,7 +166,7 @@ export default function Home() {
 
                     <CardAction></CardAction>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="pb-8">
                     <p className="text-muted-foreground"> {feature.description} </p>
                   </CardContent>
                 </CometCard>
@@ -187,8 +187,8 @@ export default function Home() {
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Consultation Packages
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto"> Our platform is designed to make healthcare more accessible and convenient for everyone. </p>
             </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto"> Our platform is designed to make healthcare more accessible and convenient for everyone. </p>
           </div>
 
           <div>
@@ -241,8 +241,8 @@ export default function Home() {
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Users Feedbacks
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto"> Hear from out Patients and Doctors </p>
             </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto"> Hear from our Patients and Doctors </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {testimonials.map((testimonials, index) => {
@@ -261,7 +261,7 @@ export default function Home() {
                         <p className="text-sm text-muted-foreground">{testimonials.role}</p>
                       </div>
                     </div>
-                    <p className="text-muted-foreground    ">&quot;{testimonials.quote}&quote</p>
+                    <p className="text-muted-foreground">&quot;{testimonials.quote}&quot;</p>
                   </CardContent>
                 </Card>
               );
@@ -295,7 +295,7 @@ export default function Home() {
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">ready to take care of the health</h2>
               </div>
-              <p className="text-lg text-muted-foreground mb-8">join thousands of users who have simplified their healthcare jounrney with out platform. Get started today and experience healthcare the way it should be</p>
+              <p className="text-lg text-muted-foreground mb-8">Join thousands of users who have simplified their healthcare journey with our platform. Get started today and experience healthcare the way it should be.</p>
               <div className="flex flex-col sm:flex-row gap-5">
                 <Button
                   size="lg"
@@ -312,7 +312,7 @@ export default function Home() {
                 >
                   <Link href="/pricing"> View Pricing </Link>
                 </Button>
-                <Button className="bg-lime-600">size = "lg"</Button>
+                <Button className="bg-lime-600"></Button>
               </div>
             </CardContent>
           </Card>
