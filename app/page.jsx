@@ -1,323 +1,256 @@
-"use client";
-
-import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Check, Stethoscope, Loader2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { creditBenefits, features, testimonials } from "@/lib/data";
-import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowRight, Stethoscope } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import Pricing from "@/components/pricing";
-import { CometCard } from "@/components/ui/comet-card";
-import useFetch from "@/hooks/use-fetch";
-
-import { motion } from "framer-motion";
-
-// Demo component for useFetch hook
-const UseFetchDemo = () => {
-  // Mock API function that simulates fetching data
-  const fetchMockData = async () => {
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    // Simulate successful response
-    return {
-      message: "Hello from useFetch hook!",
-      timestamp: new Date().toISOString(),
-      data: {
-        users: 1250,
-        doctors: 85,
-        consultations: 3420,
-      },
-    };
-  };
-
-  // Mock API function that simulates an error
-  const fetchWithError = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    throw new Error("Failed to fetch data - this is a demo error!");
-  };
-
-  // Use the hook with successful fetch
-  const { data, loading, error, fn } = useFetch(fetchMockData);
-
-  // Auto-execute on mount
-  useEffect(() => {
-    fn();
-  }, [fn]);
-
-  return (
-    <Card className="bg-muted/20 border-emerald-900/30">
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold text-white">Hook Demo</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {loading && (
-          <div className="flex items-center justify-center py-4">
-            <Loader2 className="h-6 w-6 animate-spin text-emerald-400 mr-2" />
-            <span className="text-muted-foreground">Loading...</span>
-          </div>
-        )}
-
-        {error && (
-          <div className="p-3 bg-red-900/20 border border-red-700/30 rounded-lg">
-            <p className="text-red-400 text-sm">Error: {error}</p>
-          </div>
-        )}
-
-        {data && !loading && (
-          <div className="space-y-3">
-            <div className="p-3 bg-emerald-900/20 border border-emerald-700/30 rounded-lg">
-              <p className="text-emerald-400 text-sm font-medium">{data.message}</p>
-              <p className="text-muted-foreground text-xs mt-1">Fetched at: {new Date(data.timestamp).toLocaleTimeString()}</p>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 text-center">
-              <div className="p-2 bg-muted/30 rounded">
-                <div className="text-lg font-bold text-emerald-400">{data.data.users}</div>
-                <div className="text-xs text-muted-foreground">Users</div>
-              </div>
-              <div className="p-2 bg-muted/30 rounded">
-                <div className="text-lg font-bold text-emerald-400">{data.data.doctors}</div>
-                <div className="text-xs text-muted-foreground">Doctors</div>
-              </div>
-              <div className="p-2 bg-muted/30 rounded">
-                <div className="text-lg font-bold text-emerald-400">{data.data.consultations}</div>
-                <div className="text-xs text-muted-foreground">Consultations</div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="text-xs text-muted-foreground text-center pt-2 border-t border-muted/30">This demonstrates the useFetch hook with loading, error, and success states</div>
-      </CardContent>
-    </Card>
-  );
-};
+import { creditBenefits, features, testimonials } from "@/lib/data";
 
 export default function Home() {
   return (
-    <div className="flex-right justify-center">
+    <div className="bg-background">
+      {/* Hero Section */}
       <section className="relative overflow-hidden py-32">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div className="space-y-9">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
               <Badge
                 variant="outline"
-                className="bg-emerald-900/30 border-emerald-700/30 px-4 py-2 text-emerald-300 text-sm font-medium"
+                className="bg-emerald-900/30 border-emerald-700/30 px-4 py-2 text-emerald-400 text-sm font-medium"
               >
-                {" "}
-                Trusted Care, Anytime, Anywhere , AnyPlace, Always{" "}
+                Healthcare made simple
               </Badge>
-              <h1 className=" text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                Connect With Doctors <br /> Anytime anywhere{" "}
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                Connect with doctors <br />
+                <span className="gradient-title">anytime, anywhere</span>
               </h1>
-              <p className="text-muted-foreground text-lg md:text-xl max-w-mid"> Book appointments, consult via video and manage your healthcare journey all in one secure platform </p>
+              <p className="text-muted-foreground text-lg md:text-xl max-w-md">
+                Book appointments, consult via video, and manage your healthcare
+                journey all in one secure platform.
+              </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
+                  asChild
                   size="lg"
                   className="bg-emerald-600 text-white hover:bg-emerald-700"
-                  asChild
                 >
-                  <Link href="/sign-up">
-                    Get started <ArrowRight className="ml-2 h-4 w-4" />
+                  <Link href="/onboarding">
+                    Get Started <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button
+                  asChild
                   variant="outline"
                   size="lg"
                   className="border-emerald-700/30 hover:bg-muted/80"
-                  asChild
                 >
-                  <Link href="/doctors/All">Find Doctors</Link>
+                  <Link href="/doctors">Find Doctors</Link>
                 </Button>
               </div>
             </div>
 
-            <div className="relative h-[400px] lg:h-[500px] rounded-xl  overflow-hidden   ">
-              <img
+            <div className="relative h-[400px] lg:h-[500px] rounded-xl overflow-hidden">
+              <Image
                 src="/banner2.png"
-                alt="doctor consultation"
-                className="object-cover md:pt-14 rounded-xl  "
+                alt="Doctor consultation"
+                fill
+                priority
+                className="object-cover md:pt-14 rounded-xl"
               />
             </div>
           </div>
         </div>
       </section>
 
-      <section className=" pt-20 pb-32 bg-muted/30">
+      {/* Features Section */}
+      <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              How it works
+              How It Works
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto"> Our platform is designed to make healthcare more accessible and convenient for everyone. </p>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Our platform makes healthcare accessible with just a few clicks
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => {
-              return (
-                <CometCard
-                  key={index}
-                  className="border-emerald-900/20 hover:border-emerald-900/40 transition-all duration-300"
-                >
-                  <CardHeader className="pb-2 px-10 py-5">
-                    <div className="bg-emerald-900/20 p-3 rounded-lg w-fit mb-4">{feature.icon}</div>
-                    <CardTitle className="text-xl font-semibold text-white"> {feature.title} </CardTitle>
 
-                    <CardAction></CardAction>
-                  </CardHeader>
-                  <CardContent className="pb-8">
-                    <p className="text-muted-foreground"> {feature.description} </p>
-                  </CardContent>
-                </CometCard>
-              );
-            })}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <Card
+                key={index}
+                className="bg-card border-emerald-900/20 hover:border-emerald-800/40 transition-all duration-300"
+              >
+                <CardHeader className="pb-2">
+                  <div className="bg-emerald-900/20 p-3 rounded-lg w-fit mb-4">
+                    {feature.icon}
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-white">
+                    {feature.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className=" py-20 ">
+      {/* Pricing Section with green medical styling */}
+      <section id="pricing" className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <Badge
               variant="outline"
-              className="bg-emerald-900/30 border-emerald-700/30 px-4 py-2 text-emerald-300 text-sm font-medium mb-4"
+              className="bg-emerald-900/30 border-emerald-700/30 px-4 py-1 text-emerald-400 text-sm font-medium mb-4"
             >
-              affordable and reliable
+              Affordable Healthcare
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Consultation Packages
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto"> Our platform is designed to make healthcare more accessible and convenient for everyone. </p>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Choose the perfect consultation package that fits your healthcare
+              needs
+            </p>
           </div>
 
-          <div>
-            {/*pricing table*/}
+          <div className="mx-auto">
+            {/* Clerk Pricing Table */}
             <Pricing />
 
+            {/* Description */}
             <Card className="mt-12 bg-muted/20 border-emerald-900/30">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-white flex items-center">
                   <Stethoscope className="h-5 w-5 mr-2 text-emerald-400" />
-                  Credit System
+                  How Our Credit System Works
                 </CardTitle>
-
-                <CardAction>
-                  <ul className="space-y-3">
-                    {" "}
-                    {creditBenefits.map((benefit, index) => {
-                      return (
-                        <li
-                          key={index}
-                          className="flex items-start"
-                        >
-                          <div className="mr-3 mt-1 bg-emerald-900/20 p-1 rounded-full">
-                            <Check className="h-4 w-4 text-emerald-400" />
-                          </div>
-                          <p
-                            className="text-muted-foreground"
-                            dangerouslySetInnerHTML={{ __html: benefit }}
-                          />
-                        </li>
-                      );
-                    })}{" "}
-                  </ul>
-                </CardAction>
               </CardHeader>
+              <CardContent>
+                <ul className="space-y-3">
+                  {creditBenefits.map((benefit, index) => (
+                    <li key={index} className="flex items-start">
+                      <div className="mr-3 mt-1 bg-emerald-900/20 p-1 rounded-full">
+                        <svg
+                          className="h-4 w-4 text-emerald-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          ></path>
+                        </svg>
+                      </div>
+                      <p
+                        className="text-muted-foreground"
+                        dangerouslySetInnerHTML={{ __html: benefit }}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
             </Card>
           </div>
         </div>
       </section>
 
-      <section className=" py-20 ">
+      {/* Testimonials with green medical accents */}
+      <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <Badge
               variant="outline"
-              className="bg-emerald-900/30 border-b-emerald-700/30 px-4 py-1 text-emerald-400 text-sm font-medium mb-4 "
+              className="bg-emerald-900/30 border-emerald-700/30 px-4 py-1 text-emerald-400 text-sm font-medium mb-4"
             >
-              {" "}
-              Success Stories{" of people "}
+              Success Stories
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Users Feedbacks
+              What Our Users Say
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto"> Hear from our Patients and Doctors </p>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Hear from patients and doctors who use our platform
+            </p>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonials, index) => {
-              return (
-                <Card
-                  key={index}
-                  className="border-emerald-900/20 hover:border-emerald-900/40 transition-all duration-300"
-                >
-                  <CardContent className="pt-6">
-                    <div className=" flex items-center mb-4">
-                      <div className=" w-12 h-12 rounded-full bg-emerald-900/20  justify-center mr-4  flex items-center">
-                        <span className="text-emerald-400 font-bold">{testimonials.initials}</span>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-white">{testimonials.name}</h4>
-                        <p className="text-sm text-muted-foreground">{testimonials.role}</p>
-                      </div>
+            {testimonials.map((testimonial, index) => (
+              <Card
+                key={index}
+                className="border-emerald-900/20 hover:border-emerald-800/40 transition-all"
+              >
+                <CardContent className="pt-6">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 rounded-full bg-emerald-900/20 flex items-center justify-center mr-4">
+                      <span className="text-emerald-400 font-bold">
+                        {testimonial.initials}
+                      </span>
                     </div>
-                    <p className="text-muted-foreground">&quot;{testimonials.quote}&quot;</p>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                    <div>
+                      <h4 className="font-semibold text-white">
+                        {testimonial.name}
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {testimonial.role}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-muted-foreground">
+                    &quot;{testimonial.quote}&quot;
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
-      <section>
-        <div className="justify-center px-20"></div>
-      </section>
-
-      {/* useFetch Hook Demo Section */}
-      <section className="py-20 bg-muted/10">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">useFetch Hook Demo</h2>
-            <p className="text-muted-foreground">Testing our custom data fetching hook</p>
-          </div>
-
-          <div className="max-w-md mx-auto">
-            <UseFetchDemo />
-          </div>
-        </div>
-      </section>
-
-      <section className=" py-30">
+      {/* CTA Section with green medical styling */}
+      <section className="py-20">
         <div className="container mx-auto px-4">
           <Card className="bg-gradient-to-r from-emerald-900/30 to-emerald-950/20 border-emerald-800/20">
             <CardContent className="p-8 md:p-12 lg:p-16 relative overflow-hidden">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">ready to take care of the health</h2>
+              <div className="max-w-2xl relative z-10">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                  Ready to take control of your healthcare?
+                </h2>
+                <p className="text-lg text-muted-foreground mb-8">
+                  Join thousands of users who have simplified their healthcare
+                  journey with our platform. Get started today and experience
+                  healthcare the way it should be.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="bg-emerald-600 text-white hover:bg-emerald-700"
+                  >
+                    <Link href="/sign-up">Sign Up Now</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
+                    className="border-emerald-700/30 hover:bg-muted/80"
+                  >
+                    <Link href="#pricing">View Pricing</Link>
+                  </Button>
+                </div>
               </div>
-              <p className="text-lg text-muted-foreground mb-8">Join thousands of users who have simplified their healthcare journey with our platform. Get started today and experience healthcare the way it should be.</p>
-              <div className="flex flex-col sm:flex-row gap-5">
-                <Button
-                  size="lg"
-                  className="bg-emerald-600 text-white hover:bg-emerald-700"
-                  asChild
-                >
-                  <Link href="/sign-up"> Sign up now </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  size="lg"
-                  className="border-emerald-700/30 hover:bg-muted/80"
-                >
-                  <Link href="/pricing"> View Pricing </Link>
-                </Button>
-                <Button className="bg-lime-600"></Button>
-              </div>
+
+              {/* Decorative healthcare elements */}
+              <div className="absolute right-0 top-0 w-[300px] h-[300px] bg-emerald-800/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
+              <div className="absolute left-0 bottom-0 w-[200px] h-[200px] bg-emerald-700/10 rounded-full blur-3xl -ml-10 -mb-10"></div>
             </CardContent>
           </Card>
         </div>
-        <footer className="justify-center , flex-col , px-5 , py-4"></footer>
       </section>
     </div>
   );
