@@ -8,10 +8,10 @@ import { getDoctorsBySpecialty } from "@/actions/doctors-listing";
 
 export default async function SpecialtyDoctorsPage({ params }) {
   // Extract and format the specialty from URL
-  const specialtyParam = params.specialty;
-  const specialtyName = decodeURIComponent(specialtyParam);
+  const { speciality } = await params;
+  const specialtyName = decodeURIComponent(speciality);
 
-  const { doctors, error } = await getDoctorsBySpecialty(specialtyParam);
+  const { doctors, error } = await getDoctorsBySpecialty(speciality);
 
   return (
     <>
