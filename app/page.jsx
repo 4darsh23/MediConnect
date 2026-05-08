@@ -12,7 +12,7 @@ import { HeroGeometric } from "@/components/ui/shape-landing-hero";
 export default function Home() {
   return (
     <div className="bg-background">
-      {/* Hero Section */}
+      {/* Hero Sectionsss */} 
       <HeroGeometric
         badge="MediConnect"
         title1="Connect with doctors"
