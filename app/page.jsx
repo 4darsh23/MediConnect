@@ -49,7 +49,7 @@ export default function Home() {
               How It Works
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Our platform makes healthcare accessible with just a few clicks
+              Our platform makes healthcare accessible with just like that 
             </p>
           </div>
 
