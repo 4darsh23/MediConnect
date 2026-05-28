@@ -1,8 +1,7 @@
 "use server";
 
-import { VerificationStatus } from "@/lib/generated/prisma";
 import { db } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
 export async function setUserRole(formData) {
@@ -26,12 +25,21 @@ export async function setUserRole(formData) {
   }
 
   try {
+    const client = await clerkClient();
+
     if (role === "PATIENT") {
       await db.user.update({
         where: {
           clerkUserId: userId,
         },
         data: {
+          role: "PATIENT",
+        },
+      });
+
+      // Update Clerk metadata
+      await client.users.updateUserMetadata(userId, {
+        publicMetadata: {
           role: "PATIENT",
         },
       });
@@ -60,7 +68,14 @@ export async function setUserRole(formData) {
           experience: experience,
           credentialUrl: credentialUrl,
           description: description,
-          verificationStatus: VerificationStatus.PENDING,
+          verificationStatus: "PENDING",
+        },
+      });
+
+      // Update Clerk metadata
+      await client.users.updateUserMetadata(userId, {
+        publicMetadata: {
+          role: "DOCTOR",
         },
       });
 
