@@ -51,7 +51,7 @@ export default async function RootLayout({ children }) {
             <main className="min-h-screen">{children}</main>
             <Toaster richColors />
 
-            <footer className="bg-muted/50 py-12">
+            <footer className="bg-[#030303] border-t border-white/[0.05] py-12">
               <div className="container mx-auto px-4 text-center text-gray-200">
                 <p>Made By Adarsh </p>
               </div>
