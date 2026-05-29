@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Pricing from "@/components/pricing";
 import { creditBenefits, features, testimonials } from "@/lib/data";
+import { EvervaultCard, Icon } from "@/components/ui/evervault-card";
 
 import { HeroGeometric } from "@/components/ui/shape-landing-hero";
 
